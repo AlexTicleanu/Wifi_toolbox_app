@@ -8,10 +8,9 @@ from PIL import Image
 
 
 def submit_button():
-    image = save_jpg_image(ssid_input.get(), password_input.get())
     if check_var.get() == "on":
         save_input_data_in_set(ssid_input.get(), password_input.get())
-    # label_img.configure(image=image)
+    checkbox_print_action()
 
 
 def save_file_data():
