@@ -7,6 +7,22 @@ from PIL import Image
 # password = "cJ3gFqKx"
 
 
+def validate_inputs():
+    input1 = ssid_input.get().strip()
+    input2 = password_input.get().strip()
+
+    if input1 != "" and input2 != "":
+        # Set the error message for both inputs
+        button1.configure(state="enabled")
+        # Return False to indicate validation failed
+        return True
+    # Return True to indicate validation passed
+    button1.configure(state="disabled")
+    return False
+
+def validate_file():
+    pass
+
 def submit_button():
     if check_var.get() == "on":
         save_input_data_in_set(ssid_input.get(), password_input.get())
@@ -52,17 +68,20 @@ default_image = ctk.CTkImage(default_image, size=(290, 190))
 # create frames
 left_frame = ctk.CTkFrame(tab1)
 right_frame = ctk.CTkFrame(tab1)
+error_message = ctk.StringVar()
 
 
 # Create widgets for tab 1
 label1 = ctk.CTkLabel(left_frame, text="Wifi Name:")
 ssid_input = ctk.CTkEntry(master=left_frame)
+ssid_input.bind("<KeyRelease>", lambda event: validate_inputs())
 label2 = ctk.CTkLabel(left_frame, text="Password:")
 password_input = ctk.CTkEntry(master=left_frame)
+password_input.bind("<KeyRelease>", lambda event: validate_inputs())
 check_var = ctk.StringVar()
 details_var = ctk.StringVar()
 checkbox_save = ctk.CTkCheckBox(left_frame, text="Save name and password", variable=check_var, onvalue="on", offvalue="off")
-button1 = ctk.CTkButton(left_frame, text="Generate wifi QR", command=submit_button)
+button1 = ctk.CTkButton(left_frame, text="Generate wifi QR", command=submit_button, state='disabled')
 button2 = ctk.CTkButton(left_frame, text="Open PDF", command=submit_button)
 label_img = ctk.CTkLabel(right_frame, width=300, height=300, text='', image=default_image)
 checkbox_print = ctk.CTkCheckBox(right_frame, text="Name and password visible on pdf", variable=details_var, onvalue="on", offvalue="off")
@@ -74,9 +93,11 @@ label1.grid(row=0, column=0, padx=5, pady=5)
 ssid_input.grid(row=0, column=1, padx=5, pady=5)
 label2.grid(row=1, column=0, padx=5, pady=5)
 password_input.grid(row=1, column=1, padx=5, pady=5)
-checkbox_save.grid(row=2, column=1, columnspan=1, padx=5, pady=5)
-button1.grid(row=3, column=1, columnspan=1, padx=5, pady=5)
-button2.grid(row=4, column=1, columnspan=1, padx=5, pady=5)
+
+
+checkbox_save.grid(row=3, column=1, columnspan=1, padx=5, pady=5)
+button1.grid(row=4, column=1, columnspan=1, padx=5, pady=5)
+button2.grid(row=5, column=1, columnspan=1, padx=5, pady=5)
 
 
 label_img.grid(row=0, column=0, rowspan=3, columnspan=3)
