@@ -29,7 +29,7 @@ def view_pdf(route_to_picture):
 def generate_picture_and_text(ssid, password, details):
     content = []
     save_jpg_image(ssid, password)
-    im = Imagerl('qr_internal.jpg', 7 * inch, 7 * inch)
+    im = Imagerl('qr_internal.png', 7 * inch, 7 * inch)
     content.append(im)
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(fontSize=20, name='Justify', alignment=TA_CENTER))
@@ -68,8 +68,8 @@ def generate_qr(ssid, password):
 def save_jpg_image(ssid, password):
     qr = generate_qr(ssid, password)
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save('qr_internal.jpg')
-    image_pil = Image.open('qr_internal.jpg')
+    img.save('qr_internal.png')
+    image_pil = Image.open('qr_internal.png')
     return image_pil
 
 
@@ -88,11 +88,9 @@ def save_input_data_in_set(ssid, password):
 
 def pdf_to_image(route):
     page = pdfium.PdfDocument(route)[0]
-    renderer = page.render(
-    scale=300 / 72,
-    rotation = 0)
+    renderer = page.render(scale=300 / 72, rotation=0)
     pil_img = renderer.to_pil()
-    pil_img.save("image_pdf.jpg")
-    image_pil = Image.open('image_pdf.jpg')
+    pil_img.save("image_pdf.png")
+    image_pil = Image.open('image_pdf.png')
     return image_pil
 
