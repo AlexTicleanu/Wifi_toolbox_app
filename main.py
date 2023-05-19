@@ -1,6 +1,8 @@
+import os
+
 import customtkinter as ctk
 from functions_speedtest import speed_test_bytes
-from functions_wifi_qr import save_input_data_in_set, save_pdf, pdf_to_image
+from functions_wifi_qr import save_input_data_in_set, save_pdf, pdf_to_image, view_pdf
 from PIL import Image
 
 # ssid = "DIGI-23cK"
@@ -17,6 +19,11 @@ def validate_inputs():
 def submit_action():
     if validate_inputs():
         submit_button()
+
+
+def open_pdf():
+    if os.path.isfile('wifi_file.pdf'):
+        view_pdf('wifi_file.pdf')
 
 
 def submit_button():
@@ -81,7 +88,7 @@ details_var = ctk.StringVar(value="off")
 checkbox_save = ctk.CTkCheckBox(left_frame, text="Save name and password", variable=check_var, onvalue="on",
                                 offvalue="off")
 button_submit = ctk.CTkButton(left_frame, text="Generate wifi QR", command=submit_action)
-button_open_pdf = ctk.CTkButton(left_frame, text="Open PDF")
+button_open_pdf = ctk.CTkButton(left_frame, text="Open PDF", command=open_pdf)
 label_img = ctk.CTkLabel(right_frame, width=300, height=300, text='', image=default_image)
 checkbox_print = ctk.CTkCheckBox(right_frame, text="Name and password visible on pdf", variable=details_var,
                                  onvalue="on", offvalue="off")
