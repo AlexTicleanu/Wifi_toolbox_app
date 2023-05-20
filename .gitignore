@@ -159,7 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-data.json
+data_saved.json
 image_pdf.png
 qr_internal.png
 wifi_file.pdf
