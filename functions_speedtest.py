@@ -1,23 +1,51 @@
+import threading
+
 import speedtest
-import math
+import customtkinter as ctk
 
 
-def speed_test_bytes():
-    speed_test = speedtest.Speedtest()
+class SpeedTest:
+    def __init__(self, tab):
+        self.label_text = ctk.CTkLabel(tab, text='Click to perform speed test:')
+        self.label_text.pack(pady=10)
+        self.button = ctk.CTkButton(tab, text='Speed Test', command=self.speed_thread)
+        self.button.pack(pady=10)
+        self.tab = tab
+        self.progress_bar = ctk.CTkProgressBar(tab, orientation="horizontal", mode='determinate')
+        self.progress_bar.pack(pady=10)
 
-    download_speed = speed_test.download()
-    print("Your Download speed is", convert_size(download_speed))
+    def run_speed_test(self):
+        s = speedtest.Speedtest()
+        s.get_best_server()
+        s.download()
+        s.upload(pre_allocate=False)
+        results_dict = s.results.dict()
+        self.display_results(results_dict)
+        return results_dict
 
-    upload_speed = speed_test.upload()
-    print("Your Upload speed is", convert_size(upload_speed))
-    return convert_size(download_speed), convert_size(upload_speed)
+    def display_results(self, results_dict):
+        result_label = ctk.CTkLabel(self.tab,
+                                    text=f"Download Speed: {results_dict['download'] / 1024 / 1024:.2f} MBps\n"
+                                         f"Upload Speed: {results_dict['upload'] / 1024 / 1024:.2f} MBps")
+        result_label.pack(pady=10)
+
+    def progress(self):
+        self.progress_bar.start()
+        self.button.configure(state='disabled')
+        while self.run_speed_test()['upload'] == '':
+            self.button.configure(state='disabled')
+        self.button.configure(state='enabled')
+        self.progress_bar.stop()
+
+    def speed_thread(self):
+        speed_thread = threading.Thread(target=self.run_speed_test, name="Downloader")
+        speed_thread.start()
+        speed_thread = threading.Thread(target=self.progress, name="Progress")
+        speed_thread.start()
 
 
-def convert_size(size_bytes):
-    if size_bytes == 0:
-        return "0B"
-    size_name = ("B", "KB", "MB", "GB")
-    i = int(math.floor(math.log(size_bytes, 1024)))
-    p = math.pow(1024, i)
-    s = round(size_bytes / p, 2)
-    return "%s %s" % (s, size_name[i])
+
+
+
+
+
