@@ -2,6 +2,8 @@
 
 The Wi-Fi Toolbox is a Python application that provides various functionalities related to Wi-Fi networks, including generating Wi-Fi QR codes and performing speed tests. The application is implemented using a class-based approach for improved organization and reusability.
 
+![image](https://github.com/AlexTicleanu/Wifi_toolbox_app/assets/48204339/4f9ca53e-02f9-407c-88a9-52ae8e1dcf51)
+
 ### File Structure
 
 The Wi-Fi Toolbox consists of three main files:
