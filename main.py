@@ -3,8 +3,6 @@ from functions_speedtest import speed_test_bytes
 from functions_wifi_qr import save_jpg_image, save_input_data_in_set, save_pdf, pdf_to_image
 from PIL import Image
 
-# ssid = "DIGI-23cK"
-# password = "cJ3gFqKx"
 
 
 def submit_button():
