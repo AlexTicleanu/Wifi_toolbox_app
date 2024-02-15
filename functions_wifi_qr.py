@@ -46,8 +46,16 @@ class WiFiQRGenerator(QRGeneratorBase):
 
     def submit_action_update(self):
         input_list = self.get_input()
-        image = self.submit_action(input_list)
-        self.label_img.configure(image=image)
+        if self.validate_inputs(input_list):
+            image = self.submit_button(input_list)
+            self.label_img.configure(image=image)
+        else:
+            self.ssid_input.configure(border_color="#eb3434")
+            self.password_input.configure(border_color="#eb3434")
+            if self.ssid_input.get() != "":
+                self.ssid_input.configure(border_color="#565B5E")
+            if self.password_input.get() != "":
+                self.password_input.configure(border_color="#565B5E")
 
     def save_file_data(self):
         input_list = self.get_input()

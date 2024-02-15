@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from reportlab.lib.colors import red
+
 from base_qr_generator import QRGeneratorBase
 
 
@@ -27,6 +29,10 @@ class UrlQRGenerator(QRGeneratorBase):
 
     def submit_action_update(self):
         input_list = self.get_input()
-        image = self.submit_action(input_list)
-        self.label_img.configure(image=image)
+        if self.validate_inputs(input_list):
+            self.url_input.configure(border_color="#565B5E")
+            image = self.submit_button(input_list)
+            self.label_img.configure(image=image)
+        else:
+            self.url_input.configure(border_color="#eb3434")
 
