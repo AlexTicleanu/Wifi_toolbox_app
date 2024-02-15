@@ -39,7 +39,6 @@ class WiFiQRGenerator(QRGeneratorBase):
         self.label_img.grid(row=0, column=0, rowspan=3, columnspan=3)
         self.checkbox_print.grid(row=3, column=0)
 
-
     def get_input(self):
         ssid = self.ssid_input.get()
         password = self.password_input.get()

@@ -28,17 +28,17 @@ class WiFiToolboxApp:
 
         self.tab_control.pack(expand=True, fill="both")
 
-    def on_closing(self):
+    def clean_up_and_close(self):
         try:
             os.remove('image_pdf.png')
             os.remove('qr_internal.png')
             os.remove('url_qr_file.pdf')
-        except:
+        except FileNotFoundError:
             print("File not found")
         self.root.destroy()
 
     def run(self):
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.root.protocol("WM_DELETE_WINDOW", self.clean_up_and_close)
         self.root.mainloop()
 
 

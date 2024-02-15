@@ -19,12 +19,6 @@ class QRGeneratorBase:
         if self.validate_inputs(input_list):
             return self.submit_button(input_list)
 
-    def validate_inputs(self, input_list):
-        if all(x != "" for x in input_list):
-            return True
-        else:
-            return False
-
     def save_pdf(self, input_list, details=None):
         self.generate_picture_and_text(input_list, details)
         return 'wifi_file.pdf'
@@ -56,7 +50,30 @@ class QRGeneratorBase:
         img = self.generate_qr_wifi(input_list)
         img.save('qr_internal.png')
 
-    def generate_qr_wifi(self, input_list):
+    def open_pdf(self):
+        if os.path.isfile('wifi_file.pdf'):
+            self.view_pdf('wifi_file.pdf')
+
+    @staticmethod
+    def view_pdf(route_to_picture):
+        webbrowser.open_new(route_to_picture)
+
+    @staticmethod
+    def default_img():
+        default_image = Image.open("images/default_img.png")
+        return ctk.CTkImage(default_image, size=(290, 190))
+
+    @staticmethod
+    def pdf_to_image(route):
+        page = pdfium.PdfDocument(route)[0]
+        renderer = page.render(scale=300 / 72, rotation=0)
+        pil_img = renderer.to_pil()
+        pil_img.save("image_pdf.png")
+        image_pil = Image.open('image_pdf.png')
+        return image_pil
+
+    @staticmethod
+    def generate_qr_wifi(input_list):
         if len(input_list) == 2:
             wifi_data = 'WIFI:S:{};T:WPA;P:{};;'.format(input_list[0], input_list[1])
         else:
@@ -67,22 +84,9 @@ class QRGeneratorBase:
         img = qr.make_image(fill_color="black", back_color="white")
         return img
 
-    def pdf_to_image(self, route):
-        page = pdfium.PdfDocument(route)[0]
-        renderer = page.render(scale=300 / 72, rotation=0)
-        pil_img = renderer.to_pil()
-        pil_img.save("image_pdf.png")
-        image_pil = Image.open('image_pdf.png')
-        return image_pil
-
-    def default_img(self):
-        default_image = Image.open("images/default_img.png")
-        return ctk.CTkImage(default_image, size=(290, 190))
-
-    def open_pdf(self):
-        if os.path.isfile('wifi_file.pdf'):
-            self.view_pdf('wifi_file.pdf')
-
-    def view_pdf(self, route_to_picture):
-        webbrowser.open_new(route_to_picture)
-
+    @staticmethod
+    def validate_inputs(input_list):
+        if all(x != "" for x in input_list):
+            return True
+        else:
+            return False
