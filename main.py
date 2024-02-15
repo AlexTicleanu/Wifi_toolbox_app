@@ -1,9 +1,10 @@
 import os
 
 import customtkinter as ctk
-from functions_speedtest import SpeedTest
 from functions_wifi_qr import WiFiQRGenerator
 from PIL import Image
+
+from url_generator import UrlQRGenerator
 
 
 class WiFiToolboxApp:
@@ -16,20 +17,22 @@ class WiFiToolboxApp:
         self.tab_control.pack(padx=40, pady=40)
 
         self.tab1 = self.tab_control.add("Wifi QR")
-        self.tab2 = self.tab_control.add("Speedtest")
+        self.tab2 = self.tab_control.add("URL QR")
         self.tab_control.pack(expand=True, fill="both")
 
-        self.default_image = Image.open("default_img.png")
+        self.default_image = Image.open("images/default_img.png")
         self.default_image = ctk.CTkImage(self.default_image, size=(290, 190))
 
         self.wifi_qr_generator = WiFiQRGenerator(self.tab1)
-        self.speed_test = SpeedTest(self.tab2)
+        self.url_qr_generator = UrlQRGenerator(self.tab2)
 
         self.tab_control.pack(expand=True, fill="both")
 
     def on_closing(self):
         try:
             os.remove('image_pdf.png')
+            os.remove('qr_internal.png')
+            os.remove('url_qr_file.pdf')
         except:
             print("File not found")
         self.root.destroy()
